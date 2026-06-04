@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import { clerkMiddleware } from '@clerk/express'
 
 
 import {connectDB} from "./lib/db.js";
@@ -17,6 +18,8 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());//to parse req.body
+
+app.use(clerkMiddleware());//to parse the user from the request header and make it available in req.auth
 
 app.use("api/users", userRoutes);
 app.use("api/admin", adminRoutes);
