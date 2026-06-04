@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     required:true,
   },
   clerkId: {
+    type:String,
     required:true,
     unique:true,
   },

@@ -6,7 +6,7 @@ export const protectRoute = async (req, res, next) => {
   
   }
   next();
-}
+};
 
 export const requireAdmin = async (req,res, next) => {
   try {
@@ -18,6 +18,5 @@ export const requireAdmin = async (req,res, next) => {
     }
     next();
   } catch (error){
-    return res.status(500).json({message: "Internal server error", error});
-  }
+    next(error);  }
 };
