@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { clerkMiddleware } from '@clerk/express'
 import fileUpload from "express-fileupload";
 import path from "path";
-
+import cors from "cors";
 import {connectDB} from "./lib/db.js";
 
 import userRoutes from "./routes/user.route.js";
@@ -19,8 +19,24 @@ const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT;
 
+app.use(
+	cors({
+		origin: "http://localhost:3000",
+		credentials: true,
+	})
+);
+
 app.use(express.json());//to parse req.body
-app.use(clerkMiddleware());//to parse the user from the request header and make it available in req.auth
+//
+// app.use((req, res, next) => {
+//   if (req.url.includes("/api/auth/callback")) {
+//     console.log("ПОЛУЧЕН ЗАПРОС НА CALLBACK:", req.method, req.body);
+//   }
+//   next();
+// });
+//
+
+// app.use(clerkMiddleware());//to parse the user from the request header and make it available in req.auth
 app.use(fileUpload({
   useTempFiles: true,
   tempFileDir: path.join(__dirname, "tmp"),
@@ -30,12 +46,12 @@ app.use(fileUpload({
   }
 }))
 
-app.use("api/users", userRoutes);
-app.use("api/admin", adminRoutes);
-app.use("api/auth", authRoutes);
-app.use("api/songs", songRoutes);
-app.use("api/albums", albumRoutes);
-app.use("api/stats", statRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/songs", songRoutes);
+app.use("/api/albums", albumRoutes);
+app.use("/api/stats", statRoutes);
 
 //error handler
 app.use((err,req, res,next) => {
@@ -45,4 +61,6 @@ app.use((err,req, res,next) => {
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
   connectDB();
-})
+});
+
+//todo: socket.io 
