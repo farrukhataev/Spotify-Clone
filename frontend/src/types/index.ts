@@ -6,12 +6,14 @@ export interface Song {
   imageUrl:string;
   audioUrl:string;
   duration:number;
-  createdAt:Date;
-  updatedAt:Date;
+  createdAt:string;
+  updatedAt:string;
 }
 export interface Album {
   _id:string;
   title:string;
   artist:string;
   imageUrl:string;
+  releaseYear:number;
+  songs:Song[];
 }
